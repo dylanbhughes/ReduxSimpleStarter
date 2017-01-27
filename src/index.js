@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-import SearchBar from './components/search_bar';
+import YTSearch from 'youtube-api-search';
 import API_KEY from './config.js';
 
-const App = () => {
-  return <div>
-    <SearchBar />
-  </div>;
+import SearchBar from './components/search_bar';
+import VideoList from './components/video_list';
+
+class App extends Component {
+  constructor(props) {
+      super(props);
+
+      this.state = {
+        videos: []
+      };
+
+      YTSearch({key: API_KEY, term:'surfboards'}, (videos) => {
+        this.setState({ videos });
+      });
+  }
+  render() {
+    return (
+      <div>
+        <SearchBar />
+        <VideoList videos={this.state.videos} />
+      </div>
+    );
+  }
 }
 
 // Render to the DOM
